@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{94264809-2DE7-45B1-863C-A8BD85DEB036}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xy.Web</RootNamespace>
+    <AssemblyName>Xy.Web</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\PageAnalyze.cs" />
+    <Compile Include="Cache\XslCompiledTransform.cs" />
+    <Compile Include="Control\AnalyzeResult.cs" />
+    <Compile Include="Control\ControlHandle.cs" />
+    <Compile Include="Control\DataControl\DataBuilders.cs" />
+    <Compile Include="Control\DataControl\DataControl.cs" />
+    <Compile Include="Control\DataControl\DataParameter.cs" />
+    <Compile Include="Control\IControl.cs" />
+    <Compile Include="Control\IncludeControl.cs" />
+    <Compile Include="Control\PaginationControl.cs" />
+    <Compile Include="Control\SetDataControl.cs" />
+    <Compile Include="Control\TagControl.cs" />
+    <Compile Include="Control\UserPowerControl.cs" />
+    <Compile Include="HTMLContainer.cs" />
+    <Compile Include="HttpModule.cs" />
+    <Compile Include="IGlobal.cs" />
+    <Compile Include="Page\EmptyPage.cs" />
+    <Compile Include="Page\Errorpage.cs" />
+    <Compile Include="Page\Page.cs" />
+    <Compile Include="Page\PageData.cs" />
+    <Compile Include="Page\PageDataItem.cs" />
+    <Compile Include="Page\PageRequest.cs" />
+    <Compile Include="Page\PageResponse.cs" />
+    <Compile Include="Page\PageSession.cs" />
+    <Compile Include="Page\UserPage.cs" />
+    <Compile Include="Page\WebServicePage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\ControlFactory.cs" />
+    <Compile Include="Runtime\DataBuilderFactory.cs" />
+    <Compile Include="Runtime\PageClassFactory.cs" />
+    <Compile Include="Security\IUser.cs" />
+    <Compile Include="ThreadEntity.cs" />
+    <Compile Include="Tools\ControlTools.cs" />
+    <Compile Include="Tools\Cookies.cs" />
+    <Compile Include="Tools\Form.cs" />
+    <Compile Include="Tools\UrlAnalyzer.cs" />
+    <Compile Include="Tools\XML.cs" />
+    <Compile Include="URLManage\URLCollection.cs" />
+    <Compile Include="URLManage\URLItem.cs" />
+    <Compile Include="URLManage\URLManager.cs" />
+    <Compile Include="WebSetting\WebSetting.cs" />
+    <Compile Include="WebSetting\WebSettingCollection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xy.Data\Xy.Data.csproj">
+      <Project>{3BB58636-971F-4FFB-9CE3-86AA84A4273C}</Project>
+      <Name>Xy.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xy.Tools\Xy.Tools.csproj">
+      <Project>{FB7013C2-EEFC-4CAD-B095-4D7C03A0CA7B}</Project>
+      <Name>Xy.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xy\Xy.csproj">
+      <Project>{24C743A4-1192-497D-A4C0-48DB5A04B7AF}</Project>
+      <Name>Xy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

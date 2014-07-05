@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WebSettingCollection>
+  <WebSetting>
+    <SiteUrl>self</SiteUrl>
+    <Theme>default</Theme>
+    <Encoding>UTF-8</Encoding>
+    <SessionOutTime>30</SessionOutTime>
+    <EncryptKey>THISISXYFRAMEENCRYPTKEY</EncryptKey>
+    <EncryptIV>VITPYRCNEEMARYXSISIHT</EncryptIV>
+    <XySessionId>XyFrameSessionId</XySessionId>
+    <DebugMode>True</DebugMode>
+  </WebSetting>
+</WebSettingCollection>

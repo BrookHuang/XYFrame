@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UrlRewrite>
+  <WebSite SiteUrlReg=".*" />
+  <Item File="index.html" Page="XyFrameWebClass,XyFrameWebClass.WebMain" Mime="text/html" EnableScript="True"><![CDATA[^/((default|index)\.(aspx|html))?$]]></Item>
+  <Item Page="XyFrameWebClass,XyFrameWebClass.WebMain" Mime="text/html" EnableScript="True"><![CDATA[^/installAction_(?<type>[A-Za-z]*)(_(?<step>\d+))?\.(aspx|html)$]]></Item>
+</UrlRewrite>
