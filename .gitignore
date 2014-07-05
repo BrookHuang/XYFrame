@@ -1,0 +1,29 @@
+#ignore visual studio debug folder
+obj/
+[Bb]in/
+*/aspnet_client
+/Web/*.mswwsettings
+
+#ignore dll file
+*.dll
+!/XyFrameWeb/bin/*.dll
+
+#ignore config file
+App.xml
+
+#ignore cache file
+*.xycache
+
+#ignore log file
+*.log
+*.err
+*.out
+Xy_Log/
+
+#ignore cache folder
+/XyFrameWeb/Xy_Theme/*/Xy_Cache/
+/XyFrameConsole/bin/Debug/Xy_Theme/*/Xy_Cache/
+
+#ignore useless visual studio file
+*.csproj.user
+
