@@ -6,7 +6,7 @@ obj/
 
 #ignore dll file
 *.dll
-!/XyFrameWeb/bin/*.dll
+!XyFrameWeb/bin/*.dll
 
 #ignore config file
 App.xml
