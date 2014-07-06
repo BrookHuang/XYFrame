@@ -69,7 +69,7 @@ namespace Xy.Web {
             global.HandleStart(_entity);
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("created thread entity");
-#endif      
+#endif
             _entity.Handle();
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("thread entity handled");
@@ -119,7 +119,7 @@ namespace Xy.Web {
                         }
                     }
                 }
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 exception = new Exception("Error page class exception:" + ex.Message, exception);
             }
             StringBuilder errorsb = new StringBuilder();
@@ -134,7 +134,7 @@ namespace Xy.Web {
                 errorsb.AppendLine("=============================Exception No." + i + ": " + inex.Message.Replace(Environment.NewLine, string.Empty) + "=============================");
                 if (_webSetting != null && _webSetting.DebugMode) {
                     errorsb.AppendLine("<strong>Source: </strong>" + inex.Source);
-                    if(inex.TargetSite != null)
+                    if (inex.TargetSite != null)
                         errorsb.AppendLine("<strong>TargetMethod: </strong>" + inex.TargetSite.ToString());
                     errorsb.AppendLine("<strong>Data: </strong>" + inex.Data.ToString());
                     errorsb.AppendLine("<strong>StackTrace: </strong>" + inex.StackTrace);

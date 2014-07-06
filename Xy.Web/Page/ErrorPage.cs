@@ -28,10 +28,6 @@ namespace Xy.Web.Page {
         <td><strong>URL:</strong></td>
         <td><% @Tag Provider=""Data"" Name=""URL"" %></td>
     </tr>
-    <tr>
-        <td><strong>Message:</strong></td>
-        <td><% @Tag Provider=""Data"" Name=""Message"" %></td>
-    </tr>
 </table>
 <% @Tag Provider=""Config"" Name=""DebugMode"" Mode=""Compare""  CompareMode=""Equal"" CompareValue=""True"" EnableScript=""True"" %>
 <br />
@@ -78,7 +74,7 @@ namespace Xy.Web.Page {
             PageData.Add("ClientIP", Request.UserHostAddress);
             _errorString.Append("ClientIP:").AppendLine(Request.UserHostAddress);
             PageData.Add("ClientBrowser", string.Format("{0} | {1}", Request.Browser.Type, Request.Browser.Browser));
-            _errorString.Append("ClientBrowser:").AppendLine(string.Format("{0} | {1} | {2}", Request.Browser.Type, Request.Browser.Browser));
+            _errorString.Append("ClientBrowser:").AppendLine(string.Format("{0} | {1}", Request.Browser.Type, Request.Browser.Browser));
             PageData.Add("UserAgent", Request.UserAgent);
             _errorString.Append("UserAgent:").AppendLine(Request.UserAgent);
             PageData.Add("URL", Request.Url.ToString());
@@ -96,7 +92,7 @@ namespace Xy.Web.Page {
             int i = 1;
             while (inex != null) {
                 System.Data.DataRow dr = dt.NewRow();
-                _errorString.AppendLine("=============================Exception No." + i + ": " + inex.Message.Replace(Environment.NewLine, string.Empty) + "=============================");
+                _errorString.AppendLine("=============================Exception No." + i + "=============================");
                 dr["Message"] = string.IsNullOrEmpty(inex.Message) ? "None" : inex.Message.Replace("\r\n", "<br />");
                 _errorString.AppendLine("Message:" + inex.Message);
                 dr["Source"] = string.IsNullOrEmpty(inex.Source) ? "None" : inex.Source.Replace("\r\n", "<br />");
@@ -121,23 +117,12 @@ namespace Xy.Web.Page {
             PageData.Add("Error", dt);
             Xy.Tools.Debug.Log.WriteErrorLog(_errorString.ToString());
             Response.StatusCode = 404;
-        }
 
-        public override string LoadSourceFile(string sourceFilePath) {
-            if (!System.IO.File.Exists(sourceFilePath)) {
-                //using (System.IO.FileStream _errTemplate = new System.IO.FileStream(sourceFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read)) {
-                //    using (System.IO.StreamWriter _sw = new System.IO.StreamWriter(_errTemplate, WebSetting.Encoding)) {
-                //        _sw.Write(_errorTemplate);
-                //        _sw.Flush();
-                //        _sw.Close();
-                //    }
-                //    _errTemplate.Close();
-                //}
+            if (string.IsNullOrEmpty(ThreadEntity.URLItem.PagePath)) {
                 HTMLContainer _errTemplate = new HTMLContainer(WebSetting.Encoding);
                 _errTemplate.Write(_errorTemplate);
                 SetContent(_errTemplate);
             }
-            return sourceFilePath;
         }
     }
 }
