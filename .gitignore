@@ -1,3 +1,6 @@
+#ignore DB file
+DB/
+
 #ignore visual studio debug folder
 obj/
 [Bb]in/
