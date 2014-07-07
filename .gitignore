@@ -1,15 +1,13 @@
-#ignore DB file
-DB/
+#ignore dll file
+*.dll
+*.pdb
+!/Bin/*.dll
 
 #ignore visual studio debug folder
 obj/
 [Bb]in/
 */aspnet_client
 /Web/*.mswwsettings
-
-#ignore dll file
-*.dll
-!XyFrameWeb/bin/*.dll
 
 #ignore config file
 App.xml
