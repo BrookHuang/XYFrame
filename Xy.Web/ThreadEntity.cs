@@ -80,11 +80,7 @@ namespace Xy.Web {
                                 Xy.Tools.Debug.Log.WriteErrorLog(ex.Message);
                             }
                             if ((_pes & Page.PageErrorState.ThrowOut) == Page.PageErrorState.ThrowOut) {
-                                if (_webSetting.DebugMode) {
-                                    throw new Exception("A error occur on " + _urlItem.PageClassName, ex);
-                                } else {
-                                    throw new Exception("A error occur on " + _urlItem.PageClassName);
-                                }
+                                throw new Exception("A error occur on " + _urlItem.PageClassName, ex);
                             }
                         } catch (Page.PageEndException) {
                             return;
