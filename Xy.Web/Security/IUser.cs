@@ -10,6 +10,6 @@ namespace Xy.Web.Security {
         bool HasPower(string powerKey);
         bool InGroup(int groupId);
         bool InGroup(string groupKey);
-        void WriteCookie();
+        void WriteCookie(int Expire, string Domain);
     }
 }

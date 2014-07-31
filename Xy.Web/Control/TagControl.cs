@@ -80,21 +80,27 @@ namespace Xy.Web.Control {
                     case "CompareMethod":
                         switch (createTag[i]) {
                             case "Equal":
+                            case "=":
                                 _compareMode = CompareMode.Equal;
                                 break;
                             case "NotEqual":
+                            case "!=":
                                 _compareMode = CompareMode.NotEqual;
                                 break;
                             case "Greater":
+                            case ">":
                                 _compareMode = CompareMode.Greater;
                                 break;
                             case "Lesser":
+                            case "<":
                                 _compareMode = CompareMode.Lesser;
                                 break;
                             case "GreaterAndEqual":
+                            case ">=":
                                 _compareMode = CompareMode.GreaterAndEqual;
                                 break;
                             case "LesserAndEqual":
+                            case "<=":
                                 _compareMode = CompareMode.LesserAndEqual;
                                 break;
                         }

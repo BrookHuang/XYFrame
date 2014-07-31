@@ -39,7 +39,7 @@ namespace Xy.Web.URLManage {
             _defaultUrlControl.Add(new URLItem(null, null, @".*\.ico$", "image/x-icon", false, false, "ResourceFile", URLItem.DEFAULTAGE));
             _defaultUrlControl.Add(new URLItem(null, null, @"^/Xy_(App|Data|Log)/.*", "text/html", false, false, "Prohibit", 0));
             _defaultUrlControl.Add(new URLItem(null, null, @"^/Xy_Theme/[^/]+/Xy_(Cache|Include|Page|Xslt)/.*", "text/html", false, false, "Prohibit", 0));
-            _defaultUrlControl.Add(new URLItem(null, "Xy.Web,Xy.Web.Page.ErrorPage", @"^/error\.aspx", "text/html", false, false, "MainContent", 0));
+            _defaultUrlControl.Add(new URLItem(null, "Xy.Web,Xy.Web.Page.ErrorPage", @"^/error\.aspx", "text/html", true, false, "MainContent", 0));
 
             _urlControl = new List<URLCollection>();
             foreach (System.Xml.XmlElement _xe in _document.SelectNodes("UrlRewrite/WebSite")) {

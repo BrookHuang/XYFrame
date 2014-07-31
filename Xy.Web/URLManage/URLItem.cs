@@ -66,6 +66,7 @@ namespace Xy.Web.URLManage {
                 case "Prohibit":
                     _contentType = URLType.Prohibit;
                     break;
+                case "ResourceFile":
                 default:
                     _contentType = URLType.ResourceFile;
                     break;

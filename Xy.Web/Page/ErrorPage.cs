@@ -92,7 +92,7 @@ namespace Xy.Web.Page {
             int i = 1;
             while (inex != null) {
                 System.Data.DataRow dr = dt.NewRow();
-                _errorString.AppendLine("=============================Exception No." + i + "=============================");
+                _errorString.AppendLine("=============================Exception No." + i++ + "=============================");
                 dr["Message"] = string.IsNullOrEmpty(inex.Message) ? "None" : inex.Message.Replace("\r\n", "<br />");
                 _errorString.AppendLine("Message:" + inex.Message);
                 dr["Source"] = string.IsNullOrEmpty(inex.Source) ? "None" : inex.Source.Replace("\r\n", "<br />");

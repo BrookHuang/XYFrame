@@ -25,7 +25,6 @@ namespace Xy.Runtime.Web {
             }
         }
 
-
         private static void Add(string controlName, string classFullName) {
             Add(controlName, classFullName.Substring(0, classFullName.IndexOf(',')), classFullName);
         }

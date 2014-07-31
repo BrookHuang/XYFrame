@@ -55,6 +55,9 @@ namespace Xy.Tools.Control {
                 case "Group":
                     _value = page.Request.GroupString[tempGetName];
                     break;
+                case "Values":
+                    _value = page.Request.Values[tempGetName];
+                    break;
                 case "Data":
                     _value = page.PageData[tempGetName] == null ? string.Empty : page.PageData[tempGetName].GetDataString();
                     break;

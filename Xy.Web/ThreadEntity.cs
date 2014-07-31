@@ -77,6 +77,7 @@ namespace Xy.Web {
                         try {
                             Page.PageErrorState _pes = _page.onError(ex);
                             if ((_pes & Page.PageErrorState.WriteLog) == Page.PageErrorState.WriteLog) {
+                                string _errorLogContent = _buildErrorString(_page, ex);
                                 Xy.Tools.Debug.Log.WriteErrorLog(ex.Message);
                             }
                             if ((_pes & Page.PageErrorState.ThrowOut) == Page.PageErrorState.ThrowOut) {
@@ -108,6 +109,38 @@ namespace Xy.Web {
                 case URLManage.URLType.Prohibit:
                     throw new Exception("Access denied " + URL.ToString());
             }
+        }
+
+        private string _buildErrorString(Page.PageAbstract _page, Exception ex) {
+            StringBuilder _errorString = new StringBuilder();
+            Exception exception = ex;
+            _errorString.Append("WrongTime:").AppendLine(DateTime.Now.ToString());
+            _errorString.Append("ClientIP:").AppendLine(_page.Request.UserHostAddress);
+            _errorString.Append("ClientBrowser:").AppendLine(string.Format("{0} | {1}", _page.Request.Browser.Type, _page.Request.Browser.Browser));
+            _errorString.Append("UserAgent:").AppendLine(_page.Request.UserAgent);
+            _errorString.Append("URL:").AppendLine(_page.Request.Url.ToString());
+            _errorString.Append("Message:").AppendLine(exception.Message);
+
+            Exception inex = exception;
+            int i = 1;
+            while (inex != null) {
+                _errorString.AppendLine("=============================Exception No." + i++ + "=============================");
+                _errorString.AppendLine("Message:" + inex.Message);
+                _errorString.AppendLine("Source:" + inex.Source);
+                _errorString.AppendLine("TargetSite:" + inex.TargetSite);
+
+                StringBuilder _tsb = new StringBuilder();
+                if (inex.Data != null) {
+                    foreach (object _entry in inex.Data.Keys) {
+                        _tsb.Append(string.Format("{0}:{1}" + Environment.NewLine, _entry.ToString(), inex.Data[_entry]));
+                    }
+                    _errorString.AppendLine("Data:" + _tsb.ToString());
+                }
+
+                _errorString.AppendLine("StackTrace:" + inex.StackTrace);
+                inex = inex.InnerException;
+            }
+            return _errorString.ToString();
         }
     }
 }

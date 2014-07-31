@@ -18,11 +18,18 @@ namespace Xy.Tools.Web {
         }
 
         public static void Add(string Name, string Value) {
-            AddCookie(new System.Web.HttpCookie(Name, Value));
+            Add(Name, Value, 20, "/");
         }
 
-        public static void Add(string Name, string Value, int OutTime) {
-            AddCookie(new System.Web.HttpCookie(Name, Value) { Expires = DateTime.Now.AddMinutes(OutTime) });
+        public static void Add(string Name, string Value, int Expire) {
+            Add(Name, Value, Expire, "/");
+        }
+
+        public static void Add(string Name, string Value, int Expire, string Domain) {
+            System.Web.HttpCookie _cookie = new System.Web.HttpCookie(Name, Value);
+            if (Expire != 0) _cookie.Expires = DateTime.Now.AddMinutes(Expire);
+            if (!string.IsNullOrEmpty(Domain)) _cookie.Domain = Domain;
+            AddCookie(_cookie);
         }
 
         public static void Del(string Name) {
