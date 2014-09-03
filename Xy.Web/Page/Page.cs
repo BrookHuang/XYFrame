@@ -66,22 +66,25 @@ namespace Xy.Web.Page {
             _webSetting = webSetting;
         }
 
-        public void Init(PageAbstract page, WebSetting.WebSettingItem webSetting) {
+        public void Init(PageAbstract page, WebSetting.WebSettingItem webSetting, HTMLContainer container) {
             _threadEntity = page._threadEntity;
-            _htmlContainer = new HTMLContainer(_threadEntity.WebSetting.Encoding);
             _server = page._server;
             _updateLocalCache = page._updateLocalCache;
-            _response = page._response;
             _request = page._request;
             _pageData = page._pageData;
             _pageSession = page._pageSession;
             _url = page._url;
             _webSetting = webSetting;
+            _response = page._response;
+            _response.SetNewContainer(container);
+            _htmlContainer = container;
         }
 
-        public void SetNewContainer(HTMLContainer content) {
-            _htmlContainer = content;
-            _response.SetNewContainer(_htmlContainer);
+        public void SetNewTemplate(string path) {
+            if (System.IO.File.Exists(path)) {
+                _content = System.IO.File.ReadAllBytes(path);
+                _contentChanged = true;
+            } else throw new System.IO.FileNotFoundException(string.Format("cannot found \"{0}\"", path));
         }
 
         #region Internal event

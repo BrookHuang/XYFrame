@@ -67,6 +67,7 @@ namespace Xy.WebSetting {
             //<SiteUrl>self</SiteUrl>
             _document.LoadXml(@"<WebSettingCollection>
                                     <WebSetting>
+                                        <Compatible>False</Compatible>
                                         <Theme>default</Theme>
                                         <Encoding>UTF-8</Encoding>
                                         <SessionOutTime>30</SessionOutTime>

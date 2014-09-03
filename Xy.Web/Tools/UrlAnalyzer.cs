@@ -8,35 +8,56 @@ namespace Xy.Tools.Web {
         /// the result like 'http'
         /// </summary>
         public string Protocol { get; private set; }
+
         /// <summary>
         /// the result like 'www.xiaoyang.me'
         /// </summary>
         public string Domain { get; private set; }
+
         /// <summary>
         /// the result like 'http://www.xiaoyang.me/'
         /// </summary>
         public string Site { get; private set; }
+
         /// <summary>
         /// the result like '/Dir/innerDir/'
         /// </summary>
         public string Dir { get; private set; }
+
         /// <summary>
         /// the result like '/Dir/innerDir/page.html'
         /// </summary>
         public string Path { get; private set; }
+
         /// <summary>
         /// the result like 'page.html'
         /// </summary>
         public string File { get; private set; }
+
         /// <summary>
         /// the result like '?param=value'
         /// </summary>
         public string Param { get; private set; }
         public bool HasParam { get; private set; }
+
         /// <summary>
         /// is a name-value collection for params
         /// </summary>
         public System.Collections.Specialized.NameValueCollection Params { get; private set; }
+
+        /// <summary>
+        /// use by your site in a folder
+        /// </summary>
+        public string Folder { get; private set; }
+
+        /// <summary>
+        /// physical file
+        /// </summary>
+        public string PhysicalPath { get { return System.AppDomain.CurrentDomain.BaseDirectory + Path.Replace('/', '\\'); } }
+
+        public string BasePath { get { return string.Concat(Site + Folder); } }
+
+
         private string originalUrl;
 
         public override string ToString() {
@@ -47,13 +68,10 @@ namespace Xy.Tools.Web {
             originalUrl = url;
             if (url.IndexOf("://") > 0) {
                 Protocol = url.Substring(0, url.IndexOf("://"));
-            } else {
-                Protocol = string.Empty;
-            }
-            if (!string.IsNullOrEmpty(Protocol)) {
                 Domain = url.Substring(Protocol.Length + 3, url.IndexOf("/", Protocol.Length + 3) - (Protocol.Length + 3));
                 Site = Protocol + "://" + Domain + "/";
             } else {
+                Protocol = string.Empty;
                 Domain = url.Substring(0, url.IndexOf("/"));
                 if (!string.IsNullOrEmpty(Domain)) {
                     Site = Domain;
@@ -88,6 +106,27 @@ namespace Xy.Tools.Web {
             }
             Dir = Path.Substring(0, Path.LastIndexOf('/') + 1);
             File = Path.Substring(Dir.Length);
+        }
+
+        public void SetRoot(string folder) {
+            Folder = string.Concat(string.Concat(folder, '/'));
+            if (Path.IndexOf(Folder) == 1) {
+                Path = Path.Substring(Folder.Length);
+            }
+        }
+
+        public bool HasRoot(string folder) {
+            return Path.IndexOf(string.Concat('/', folder, '/')) == 0;
+        }
+
+        public void setPort(string port) {
+            if (!string.IsNullOrEmpty(Protocol)) {
+                if (Domain.IndexOf(':') > -1) {
+                    Domain = Domain.Substring(0, Domain.IndexOf(':'));
+                }
+                Domain += ':' + port;
+                Site = Protocol + "://" + Domain + "/";
+            }
         }
     }
 }

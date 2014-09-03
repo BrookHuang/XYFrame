@@ -90,7 +90,7 @@ namespace Xy.Web {
                     _content = _page.HTMLContainer;
                     break;
                 case URLManage.URLType.ResourceFile:
-                    DateTime _modifiedTime = System.IO.File.GetLastWriteTime(_webContext.Request.PhysicalPath);
+                    DateTime _modifiedTime = System.IO.File.GetLastWriteTime(_url.PhysicalPath);
                     if (Xy.Tools.IO.File.IsClientCached(_webContext.Request.Headers["If-Modified-Since"], _modifiedTime) && !_webSetting.DebugMode) {
                         WebContext.Response.StatusCode = 304;
                         WebContext.Response.SuppressContent = true;
@@ -103,7 +103,7 @@ namespace Xy.Web {
                             WebContext.Response.ExpiresAbsolute = DateTime.Now.Add(_urlItem.Age);
                             WebContext.Response.AddHeader("Cache-Control", "max-age=" + _urlItem.Age.TotalMinutes);
                         }
-                        _webContext.Response.TransmitFile(_webContext.Request.PhysicalPath);
+                        _webContext.Response.TransmitFile(_url.PhysicalPath);
                     }
                     break;
                 case URLManage.URLType.Prohibit:

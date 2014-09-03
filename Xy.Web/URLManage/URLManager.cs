@@ -53,11 +53,17 @@ namespace Xy.Web.URLManage {
 
         }
 
-        internal URLCollection GetUrlItemCollection(string regUrl) {
+        internal URLCollection GetUrlItemCollection(Xy.Tools.Web.UrlAnalyzer regUrl) {
             if (_urlControl == null) { Init(); }
             for (int i = 0; i < _urlControl.Count; i++) {
-                if (_urlControl[i].IsMatch(regUrl)) {
-                    return _urlControl[i];
+                if (_urlControl[i].IsMatch(regUrl.Site)) {
+                    URLCollection _current = _urlControl[i];
+                    if (!string.IsNullOrEmpty(_current.WebConfig.Root)){
+                        if (!regUrl.HasRoot(_current.WebConfig.Root)) {
+                            continue;
+                        }
+                    }
+                    return _current;
                 }
             }
             return null;

@@ -39,6 +39,7 @@ namespace Xy.Web {
         }
 
         private void context_BeginRequest(object sender, EventArgs e) {
+
             global.RequestStart(sender, e);
             HttpApplication _application = sender as HttpApplication;
 #if DEBUG
@@ -47,40 +48,48 @@ namespace Xy.Web {
 #endif
             Xy.Tools.Web.UrlAnalyzer _url = new Tools.Web.UrlAnalyzer(_application.Context.Request.Url.ToString());
 
-            URLManage.URLCollection _urlCollection = _urlManager.GetUrlItemCollection(_url.Site);
+            URLManage.URLCollection _urlCollection = _urlManager.GetUrlItemCollection(_url);
             if (_urlCollection == null) {
                 throw new Exception(string.Format("can not found URL collection: {0}", _url.ToString()));
-            }
+            } else {
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("get url collection.");
 #endif
-            URLManage.URLItem _urlItem = _urlCollection.GetUrlItem(_url.Path);
-            if (_urlItem == null) {
-                throw new Exception(string.Format("can not found URL item: {0}", _url.ToString()));
-            }
-#if DEBUG
-            Xy.Tools.Debug.Log.WriteEventLog("get url item.");
-#endif
-            Xy.WebSetting.WebSettingItem _webSetting = Xy.WebSetting.WebSettingCollection.GetWebSetting(_urlCollection.WebConfigName);
+                Xy.WebSetting.WebSettingItem _webSetting = _urlCollection.WebConfig;
+                if (!string.IsNullOrEmpty(_webSetting.Root)) {
+                    _url.SetRoot(_webSetting.Root);
+                }
+                if (!string.IsNullOrEmpty(_webSetting.Port)) {
+                    _url.setPort(_webSetting.Port);
+                }
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("get websetting item.");
 #endif
-            ThreadEntity _entity = new ThreadEntity(_application.Context, _webSetting, _urlItem, _url);
-            global.HandleStart(_entity);
+                URLManage.URLItem _urlItem = _urlCollection.GetUrlItem(_url.Path);
+                if (_urlItem == null) {
+                    if(!_webSetting.Compatible) throw new Exception(string.Format("can not found URL item: {0}", _url.ToString()));
+                } else {
+#if DEBUG
+            Xy.Tools.Debug.Log.WriteEventLog("get url item.");
+#endif
+                    ThreadEntity _entity = new ThreadEntity(_application.Context, _webSetting, _urlItem, _url);
+                    global.HandleStart(_entity);
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("created thread entity");
 #endif
-            _entity.Handle();
+                    _entity.Handle();
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("thread entity handled");
 #endif
-            if (_entity.Content.HasContent) _application.Response.BinaryWrite(_entity.Content.ToArray());
-            global.HandleEnd(_entity);
+                    if (_entity.Content.HasContent) _application.Response.BinaryWrite(_entity.Content.ToArray());
+                    global.HandleEnd(_entity);
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("content outputed");
             Xy.Tools.Debug.Log.EndWorkflowLog();
 #endif
-            _application.Context.Response.End();
+                    _application.Context.Response.End();
+                }
+            }
         }
 
         private void context_Error(object sender, EventArgs e) {
@@ -90,7 +99,7 @@ namespace Xy.Web {
             Xy.WebSetting.WebSettingItem _webSetting = null;
             try {
                 Xy.Tools.Web.UrlAnalyzer _url = new Xy.Tools.Web.UrlAnalyzer(_application.Context.Request.Url.ToString());
-                URLManage.URLCollection _urlCollection = URLManage.URLManager.GetInstance().GetUrlItemCollection(_url.Site);
+                URLManage.URLCollection _urlCollection = URLManage.URLManager.GetInstance().GetUrlItemCollection(_url);
                 if (_urlCollection != null) {
                     URLManage.URLItem _urlItem = null;
                     string _errorURL = _url.Dir.TrimEnd('/');

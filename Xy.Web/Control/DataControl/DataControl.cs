@@ -54,9 +54,13 @@ namespace Xy.Web.Control {
                                 _dataBuilder = new Xy.Data.DataBuilders.XMLBuilder();
                                 break;
                             default:
-                                _dataBuilder = Runtime.Web.DataBuilderFactory.Get(createTag[i]);
+                                try { 
+                                    _dataBuilder = Runtime.Web.DataBuilderFactory.Get(createTag[i]);
+                                } catch (NullReferenceException ex) {
+                                    throw new Exception(string.Format("Cannot found data builder:{0}, please assign a correct provider.", createTag[i]));
+                                }
                                 if(_dataBuilder == null)
-                                    throw new Exception("Cannot found data builder, please assign a correct provider.");
+                                    throw new Exception(string.Format("Cannot found data builder:{0}, please assign a correct provider.", createTag[i]));
                                 break;
                         }
                         break;

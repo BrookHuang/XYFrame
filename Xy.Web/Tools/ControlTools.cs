@@ -68,6 +68,15 @@ namespace Xy.Tools.Control {
                         _value = page.WebSetting.Config[tempGetName];
                     }
                     break;
+                case "App":
+                    switch (tempGetName) {
+                        case "Domain": _value = page.URL.Site; break;
+                        case "BasePath": _value = string.Concat(page.URL.Site, page.URL.Folder); break;
+                        case "CssPath": _value = string.Concat(page.URL.Site, page.URL.Folder, page.WebSetting.CssPath); break;
+                        case "ScriptPath": _value = string.Concat(page.URL.Site, page.URL.Folder, page.WebSetting.ScriptPath); break;
+                        case "Config": _value = page.WebSetting.Name; break;
+                    }
+                    break;
             }
             return _value;
         }

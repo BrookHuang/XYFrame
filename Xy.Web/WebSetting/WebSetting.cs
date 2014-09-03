@@ -6,6 +6,16 @@ namespace Xy.WebSetting {
     public class WebSettingItem {
         private string _name;
         public string Name { get { return _name; } }
+
+        private string _inherit;
+        private WebSettingItem _inheritInstance = null;
+        public WebSettingItem Inherit { get { if (_inheritInstance == null) _inheritInstance = WebSettingCollection.GetWebSetting(_inherit); return _inheritInstance; } }
+
+        private string _root;
+        public string Root { get { return _root; } }
+
+        private string _port;
+        public string Port { get { return _port; } }
         
         private string _theme;
         public string Theme { get { return _theme; } }
@@ -58,17 +68,37 @@ namespace Xy.WebSetting {
         private bool _debugMode;
         public bool DebugMode { get { return _debugMode; } }
 
+        private bool _compatible;
+        public bool Compatible { get { return _compatible; } }
+
         internal WebSettingItem(System.Xml.XmlNode XMLNode) {
             if (XMLNode.Attributes["Name"] == null) {
                 _name = WebSettingCollection.DEFAULTWEBSETTINGNAME;
             } else {
                 _name = XMLNode.Attributes["Name"].Value;
             }
+            if (XMLNode.Attributes["Inherit"] == null) {
+                _inherit = WebSettingCollection.DEFAULTWEBSETTINGNAME;
+            }else{
+                _inherit = XMLNode.Attributes["Inherit"].Value;
+            }
             _config = new System.Collections.Specialized.NameValueCollection();
         }
 
         private string _themePath;
         internal void Init(System.Xml.XmlNode XMLNode) {
+
+            if (XMLNode.SelectSingleNode("Root") != null) {
+                _root = XMLNode.SelectSingleNode("Root").InnerText;
+            }
+
+            if (XMLNode.SelectSingleNode("Port") != null) {
+                _port = XMLNode.SelectSingleNode("Port").InnerText;
+            }
+
+            if (XMLNode.SelectSingleNode("Compatible") != null) {
+                _compatible = Convert.ToBoolean(XMLNode.SelectSingleNode("Compatible").InnerText);
+            }
 
             if (XMLNode.SelectSingleNode("Theme") != null) {
                 _theme = XMLNode.SelectSingleNode("Theme").InnerText;
@@ -172,7 +202,10 @@ namespace Xy.WebSetting {
         }
 
         internal void CopyBase(WebSettingItem WebConfig) {
+            _root = WebConfig.Root;
+            _port = WebConfig.Port;
             _themePath = WebConfig.Theme;
+            _compatible = WebConfig.Compatible;
             _encoding = WebConfig.Encoding;
             _sessionOutTime = WebConfig.SessionOutTime;
             _encryptKey = WebConfig.EncryptKey;

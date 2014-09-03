@@ -62,6 +62,7 @@
     <Compile Include="Page\PageRequest.cs" />
     <Compile Include="Page\PageResponse.cs" />
     <Compile Include="Page\PageSession.cs" />
+    <Compile Include="Page\StraightPage.cs" />
     <Compile Include="Page\UserPage.cs" />
     <Compile Include="Page\WebServicePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

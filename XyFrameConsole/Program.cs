@@ -479,10 +479,14 @@ namespace XyFrameConsole {
 //            _xPathNavigator.AppendChild("<Page>1</Page>");
 //            _xPathDocument = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xPathNavigator.OuterXml));
 //            Console.WriteLine(_xmlDocument.OuterXml);
-            Exception ex1 = new Exception("ex1");
-            Exception ex2 = new Exception("ex2", ex1);
-            Exception ex3 = new Exception("ex3", ex2);
-            
+            //string url = "http://sh.qq.com/a/20140827/035326.htm?ADUIN=2571538841&ADSESSION=1409106268&ADTAG=CLIENT.QQ.5347_.0&ADPUBNO=26378";
+            Xy.Tools.Web.UrlAnalyzer _url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/test/");
+            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath + " | " + _url.HasRoot("test"));
+            _url.SetRoot("test");
+            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath);
+
+            _url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/");
+            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path);
         }
 
         public class TestClass {

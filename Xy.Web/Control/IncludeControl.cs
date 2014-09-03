@@ -69,8 +69,7 @@ namespace Xy.Web.Control {
             Xy.Web.Page.PageAbstract _page;
             if (string.IsNullOrEmpty(_type)) _type = "Xy.Web,Xy.Web.Page.EmptyPage";
             _page = Runtime.Web.PageClassLibrary.Get(_type);
-            _page.Init(CurrentPageClass, _webSetting == null ? CurrentPageClass.WebSetting : _webSetting);
-            _page.SetNewContainer(ContentContainer);
+            _page.Init(CurrentPageClass, _webSetting == null ? CurrentPageClass.WebSetting : _webSetting, ContentContainer);
             if (_extValues != null) {
                 for (int i = 0; i < _extValues.Count; i++) {
                     if (_page.Request.Values[_extValues.Keys[i]] != null) {

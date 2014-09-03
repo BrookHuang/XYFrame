@@ -123,9 +123,10 @@ namespace Xy.Web.Control {
                 case "App":
                     switch (_settingProperty) {
                         case "Domain": return new _fillContent(delegate_App_Domain);
+                        case "BasePath": return new _fillContent(delegate_App_BasePath);
                         case "CssPath": return new _fillContent(delegate_App_CssPath);
                         case "ScriptPath": return new _fillContent(delegate_App_ScriptPath);
-                        case "Config": return new _fillContent(delegate_App_ScriptPath);
+                        case "Config": return new _fillContent(delegate_App_Config);
                     }
                     break;
                 case "Config":
@@ -165,11 +166,14 @@ namespace Xy.Web.Control {
         private void delegate_App_Domain(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
             contentContainer.Write(currentPageClass.URL.Site);
         }
+        private void delegate_App_BasePath(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.BasePath);
+        }
         private void delegate_App_CssPath(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
-            contentContainer.Write(currentPageClass.URL.Site + _webConfig.CssPath);
+            contentContainer.Write(string.Concat(currentPageClass.URL.BasePath, _webConfig.CssPath));
         }
         private void delegate_App_ScriptPath(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
-            contentContainer.Write(currentPageClass.URL.Site + _webConfig.ScriptPath);
+            contentContainer.Write(string.Concat(currentPageClass.URL.BasePath, _webConfig.ScriptPath));
         }
         private void delegate_App_Config(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
             contentContainer.Write(_webConfig.Name);

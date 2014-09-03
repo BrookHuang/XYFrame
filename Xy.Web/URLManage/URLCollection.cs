@@ -7,6 +7,10 @@ namespace Xy.Web.URLManage {
     public class URLCollection : List<URLItem> {
         private string _webConfigName;
         public string WebConfigName { get { return _webConfigName; } }
+
+        private WebSetting.WebSettingItem _webConfig;
+        public WebSetting.WebSettingItem WebConfig { get { return _webConfig; } }
+
         private System.Text.RegularExpressions.Regex _siteUrlReg;
         public Regex SiteUrlReg { get { return _siteUrlReg; } }
 
@@ -19,6 +23,7 @@ namespace Xy.Web.URLManage {
 
         internal URLCollection(string webConfigName, string siteUrlRegex) {
             _webConfigName = webConfigName;
+            _webConfig = Xy.WebSetting.WebSettingCollection.GetWebSetting(_webConfigName);
             if (!string.IsNullOrEmpty(siteUrlRegex)) {
                 _siteUrlReg = new Regex(siteUrlRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             }

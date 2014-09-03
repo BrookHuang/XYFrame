@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XyFrameConsole", "XyFrameConsole\XyFrameConsole.csproj", "{2EBC2E3B-9309-4F5C-A8BB-58049091CAFC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xy", "Xy\Xy.csproj", "{24C743A4-1192-497D-A4C0-48DB5A04B7AF}"
