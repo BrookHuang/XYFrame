@@ -5,6 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace Xy.Web.URLManage {
     public class URLCollection : List<URLItem> {
+
+        private string _name;
+        public string Name { get { return _name; } }
+
+        private string _inherit;
+        public string Inherit { get { return _inherit; } }
+
         private string _webConfigName;
         public string WebConfigName { get { return _webConfigName; } }
 
@@ -16,14 +23,20 @@ namespace Xy.Web.URLManage {
 
         internal URLCollection(System.Xml.XmlElement URLXml) :
             this(
+                URLXml.Attributes["Name"] == null ?
+                    string.Empty : URLXml.Attributes["Name"].Value,
                 URLXml.Attributes["WebConfig"] == null ?
                     string.Empty : URLXml.Attributes["WebConfig"].Value,
-                URLXml.Attributes["SiteUrlReg"].Value
+                URLXml.Attributes["SiteUrlReg"].Value,
+                URLXml.Attributes["Inherit"] == null ?
+                    string.Empty : URLXml.Attributes["Inherit"].Value
             ) { }
 
-        internal URLCollection(string webConfigName, string siteUrlRegex) {
+        internal URLCollection(string name, string webConfigName, string siteUrlRegex, string inherit) {
+            _name = name;
             _webConfigName = webConfigName;
             _webConfig = Xy.WebSetting.WebSettingCollection.GetWebSetting(_webConfigName);
+            _inherit = inherit;
             if (!string.IsNullOrEmpty(siteUrlRegex)) {
                 _siteUrlReg = new Regex(siteUrlRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             }

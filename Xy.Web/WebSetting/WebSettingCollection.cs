@@ -36,9 +36,7 @@ namespace Xy.WebSetting {
                 if (string.Compare(_ws.Name, DEFAULTWEBSETTINGNAME, true) == 0) {
                     WebSettingItem _defaultWS = InitDefaultConfig();
                     _ws.CopyBase(_defaultWS);
-                    _ws.CopyConfig(_defaultWS);
                     _ws.Init(_item);
-                    _ws.CreateFolders();
                     _instances.Add(_ws.Name, _ws);
                     _defaultItem = _ws;
                     break;
@@ -46,14 +44,13 @@ namespace Xy.WebSetting {
             }
             if (_defaultItem == null) _defaultItem = InitDefaultConfig();
             _tempConfigNameList.Add(DEFAULTWEBSETTINGNAME);
+
             for (int i = 0; i < _webSettings.Count; i++) {
                 System.Xml.XmlNode _item = _webSettings[i];
                 WebSettingItem _ws = new WebSettingItem(_item);
                 if (string.Compare(_ws.Name, DEFAULTWEBSETTINGNAME, true) != 0) {
-                    _ws.CopyBase(_defaultItem);
-                    _ws.CopyConfig(_defaultItem);
+                    _ws.CopyBase(_ws.Inherit);
                     _ws.Init(_item);
-                    _ws.CreateFolders();
                     _instances.Add(_ws.Name, _ws);
                     _tempConfigNameList.Add(_ws.Name);
                 }

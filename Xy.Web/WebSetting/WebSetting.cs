@@ -20,6 +20,9 @@ namespace Xy.WebSetting {
         private string _theme;
         public string Theme { get { return _theme; } }
 
+        private string _themePath;
+        public string ThemePath { get { return _themePath; } }
+
         private Encoding _encoding;
         public Encoding Encoding { get { return _encoding; } }
 
@@ -83,9 +86,9 @@ namespace Xy.WebSetting {
                 _inherit = XMLNode.Attributes["Inherit"].Value;
             }
             _config = new System.Collections.Specialized.NameValueCollection();
+            _translate = new System.Collections.Specialized.NameValueCollection();
         }
 
-        private string _themePath;
         internal void Init(System.Xml.XmlNode XMLNode) {
 
             if (XMLNode.SelectSingleNode("Root") != null) {
@@ -151,17 +154,16 @@ namespace Xy.WebSetting {
 
             foreach (System.Xml.XmlNode _xn in XMLNode.SelectNodes("Config/Item")) {
                 if (_xn.Attributes["Name"] != null) {
-                    _config.Add(_xn.Attributes["Name"].Value, _xn.InnerText);
+                    _config[_xn.Attributes["Name"].Value] = _xn.InnerText;
                 }
             }
 
-            _translate = new System.Collections.Specialized.NameValueCollection();
             foreach (System.Xml.XmlNode _xn in XMLNode.SelectNodes("Translate/Item")) {
                 if (_xn.Attributes["Name"] != null) {
-                    _translate.Add(_xn.Attributes["Name"].Value, _xn.InnerText);
+                    _translate[_xn.Attributes["Name"].Value] = _xn.InnerText;
                 }
             }
-            
+
             _xsltDir = Xy.AppSetting.ThemeDir + _themePath + Xy.AppSetting.XSLT_PATH;
             _pageDir = Xy.AppSetting.ThemeDir + _themePath + Xy.AppSetting.PAGE_PATH;
             _includeDir = Xy.AppSetting.ThemeDir + _themePath + Xy.AppSetting.INCLUDE_PATH;
@@ -190,6 +192,8 @@ namespace Xy.WebSetting {
             } else {
                 _cssDir = Xy.AppSetting.ThemeDir + _themePath + Xy.AppSetting.CSS_PATH;
             }
+
+            CreateFolders();
         }
 
         internal void CreateFolders() {
@@ -204,7 +208,8 @@ namespace Xy.WebSetting {
         internal void CopyBase(WebSettingItem WebConfig) {
             _root = WebConfig.Root;
             _port = WebConfig.Port;
-            _themePath = WebConfig.Theme;
+            _theme = WebConfig.Theme;
+            _themePath = WebConfig.ThemePath;
             _compatible = WebConfig.Compatible;
             _encoding = WebConfig.Encoding;
             _sessionOutTime = WebConfig.SessionOutTime;
@@ -212,17 +217,34 @@ namespace Xy.WebSetting {
             _encryptIV = WebConfig.EncryptIV;
             _debugMode = WebConfig.DebugMode;
             _userKeyCookieName = WebConfig.UserKeyCookieName;
+            _xsltDir = WebConfig.XsltDir;
+            _pageDir = WebConfig.PageDir;
+            _includeDir = WebConfig.IncludeDir;
+            _cacheDir = WebConfig.CacheDir;
+            _cssDir = WebConfig.CssDir;
+            _scriptDir = WebConfig.ScriptDir;
+            _cssPath = WebConfig.CssPath;
+            _scriptPath = WebConfig.ScriptPath;
+            
+            CopyConfig(WebConfig);
+
+            CopyTranslate(WebConfig);
+
+            CreateFolders();
         }
 
-        internal void CopyConfig(WebSettingItem WebConfig) {
+        private void CopyConfig(WebSettingItem WebConfig) {
             foreach (string _key in WebConfig.Config.Keys) {
                 if (string.IsNullOrEmpty(_config[_key]))
                     _config[_key] = WebConfig.Config[_key];
             }
-            if (!string.IsNullOrEmpty(_config["ScriptPath"])) { _scriptPath = _config["ScriptPath"]; }
-            if (!string.IsNullOrEmpty(_config["CssPath"])) { _cssPath = _config["CssPath"]; }
-            if (!string.IsNullOrEmpty(_config["ScriptDir"])) { _scriptDir = _config["ScriptDir"]; }
-            if (!string.IsNullOrEmpty(_config["CssDir"])) { _cssDir = _config["CssDir"]; }
+        }
+
+        private void CopyTranslate(WebSettingItem WebConfig) {
+            foreach (string _key in WebConfig.Config.Keys) {
+                if (string.IsNullOrEmpty(_config[_key]))
+                    _config[_key] = WebConfig.Config[_key];
+            }
         }
     }
 }

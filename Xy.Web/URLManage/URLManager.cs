@@ -24,7 +24,7 @@ namespace Xy.Web.URLManage {
             _document.Load(Xy.Tools.IO.File.foundConfigurationFile("UrlControl", Xy.AppSetting.FILE_EXT));
             System.Xml.XmlNodeList default_xnl = _document.SelectNodes("UrlRewrite/Item");
 
-            _defaultUrlControl = new URLCollection(string.Empty, string.Empty);
+            _defaultUrlControl = new URLCollection(string.Empty, string.Empty, string.Empty, string.Empty);
             foreach (System.Xml.XmlNode _xn in default_xnl) {
                 _defaultUrlControl.Add(new URLItem(_xn));
             }
@@ -42,15 +42,32 @@ namespace Xy.Web.URLManage {
             _defaultUrlControl.Add(new URLItem(null, "Xy.Web,Xy.Web.Page.ErrorPage", @"^/error\.aspx", "text/html", true, false, "MainContent", 0));
 
             _urlControl = new List<URLCollection>();
-            foreach (System.Xml.XmlElement _xe in _document.SelectNodes("UrlRewrite/WebSite")) {
+            foreach (System.Xml.XmlElement _xe in _document.SelectNodes("UrlRewrite/UrlCollection")) {
                 URLCollection _urlItemCollection = new URLCollection(_xe);
+                if (_urlItemCollection.SiteUrlReg == null && string.IsNullOrEmpty(_urlItemCollection.Name)) continue;
+                
                 foreach (System.Xml.XmlNode _xn in _xe.SelectNodes("Item")) {
                     _urlItemCollection.Add(new URLItem(_xn));
                 }
-                _urlItemCollection.AddRange(_defaultUrlControl.ToArray());
+                URLCollection _parent = null;
+                if (!string.IsNullOrEmpty(_urlItemCollection.Inherit)) {
+                    _parent = GetUrlItemCollection(_urlItemCollection.Inherit);
+                }
+                if (_parent == null) _parent = _defaultUrlControl;
+                _urlItemCollection.AddRange(_parent.ToArray()); 
                 _urlControl.Add(_urlItemCollection);
             }
 
+        }
+
+        internal URLCollection GetUrlItemCollection(string name) {
+            if (_urlControl == null) return null;
+            for (int i = 0; i < _urlControl.Count; i++) {
+                if (string.Compare(name, _urlControl[i].Name, true) == 0) {
+                    return _urlControl[i];
+                }
+            }
+            return null;
         }
 
         internal URLCollection GetUrlItemCollection(Xy.Tools.Web.UrlAnalyzer regUrl) {

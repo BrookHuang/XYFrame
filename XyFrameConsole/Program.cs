@@ -480,19 +480,22 @@ namespace XyFrameConsole {
 //            _xPathDocument = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xPathNavigator.OuterXml));
 //            Console.WriteLine(_xmlDocument.OuterXml);
             //string url = "http://sh.qq.com/a/20140827/035326.htm?ADUIN=2571538841&ADSESSION=1409106268&ADTAG=CLIENT.QQ.5347_.0&ADPUBNO=26378";
-            Xy.Tools.Web.UrlAnalyzer _url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/test/");
-            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath + " | " + _url.HasRoot("test"));
-            _url.SetRoot("test");
-            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath);
 
-            _url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/");
-            Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path);
-        }
+            //Xy.Tools.Web.UrlAnalyzer _url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/test/");
+            //Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath + " | " + _url.HasRoot("test"));
+            //_url.SetRoot("test");
+            //Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path + " | " + _url.BasePath);
 
-        public class TestClass {
-            public override string ToString() {
-                return "this is test Class";
-            }
+            //_url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/");
+            //Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path);
+
+            System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            Console.WriteLine(_nvc["abc"] == null);
+            Console.WriteLine(_nvc["abc"]);
+            Console.WriteLine(_nvc["abc"] == null);
+            _nvc["abc"] = "abc";
+            Console.WriteLine(_nvc["abc"]);
+            Console.WriteLine(_nvc["abc"] == null);
         }
         #region Url Test
         //static string _urlString1 = "http://www.homes-up.com/mango-wood-tray-leaves-and-trees-homes-up-brown-25x9cm.html?test=abcd#tag";
