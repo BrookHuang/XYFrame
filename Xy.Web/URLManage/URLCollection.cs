@@ -27,7 +27,8 @@ namespace Xy.Web.URLManage {
                     string.Empty : URLXml.Attributes["Name"].Value,
                 URLXml.Attributes["WebConfig"] == null ?
                     string.Empty : URLXml.Attributes["WebConfig"].Value,
-                URLXml.Attributes["SiteUrlReg"].Value,
+                URLXml.Attributes["SiteUrlReg"] == null ?
+                    string.Empty : URLXml.Attributes["SiteUrlReg"].Value,
                 URLXml.Attributes["Inherit"] == null ?
                     string.Empty : URLXml.Attributes["Inherit"].Value
             ) { }
