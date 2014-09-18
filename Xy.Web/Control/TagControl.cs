@@ -122,8 +122,6 @@ namespace Xy.Web.Control {
             switch (_settingClass) {
                 case "App":
                     switch (_settingProperty) {
-                        case "Domain": return new _fillContent(delegate_App_Domain);
-                        case "BasePath": return new _fillContent(delegate_App_BasePath);
                         case "CssPath": return new _fillContent(delegate_App_CssPath);
                         case "ScriptPath": return new _fillContent(delegate_App_ScriptPath);
                         case "Config": return new _fillContent(delegate_App_Config);
@@ -152,7 +150,16 @@ namespace Xy.Web.Control {
                 case "Session":
                     return new _fillContent(delegate_Session);
                 case "Url":
-                    return new _fillContent(delegate_Url);
+                    switch (_settingProperty) {
+                        case "Domain": return new _fillContent(delegate_Url_Domain);
+                        case "BaseUrl": return new _fillContent(delegate_Url_BaseUrl);
+                        case "Path": return new _fillContent(delegate_Url_Path);
+                        case "File": return new _fillContent(delegate_Url_File);
+                        case "Dir": return new _fillContent(delegate_Url_Dir);
+                    }
+                    break;
+                case "QueryString":
+                    return new _fillContent(delegate_QueryString);
                 case "Form":
                     return new _fillContent(delegate_Form);
                 case "Group":
@@ -163,12 +170,6 @@ namespace Xy.Web.Control {
             throw new Exception(string.Format("Invalied Provider({1}) or Name({2}) on TagControl:{0}", _map, _settingClass, _settingProperty));
         }
 
-        private void delegate_App_Domain(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
-            contentContainer.Write(currentPageClass.URL.Site);
-        }
-        private void delegate_App_BasePath(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
-            contentContainer.Write(currentPageClass.URL.BasePath);
-        }
         private void delegate_App_CssPath(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
             contentContainer.Write(string.Concat(currentPageClass.URL.BasePath, _webConfig.CssPath));
         }
@@ -217,7 +218,22 @@ namespace Xy.Web.Control {
                 contentContainer.Write(temp);
             }
         }
-        private void delegate_Url(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+        private void delegate_Url_Domain(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.Site);
+        }
+        private void delegate_Url_BaseUrl(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.BasePath);
+        }
+        private void delegate_Url_Path(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.Path);
+        }
+        private void delegate_Url_File(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.File);
+        }
+        private void delegate_Url_Dir(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
+            contentContainer.Write(currentPageClass.URL.Dir);
+        }
+        private void delegate_QueryString(string name, ThreadEntity currentThreadEntity, Page.PageAbstract currentPageClass, HTMLContainer contentContainer) {
             string temp = currentPageClass.Request.QueryString[name];
             if (!string.IsNullOrEmpty(temp)) {
                 contentContainer.Write(temp);

@@ -119,7 +119,7 @@ namespace Xy.Tools.Web {
             return Path.IndexOf(string.Concat('/', folder, '/')) == 0;
         }
 
-        public void setPort(string port) {
+        public void SetPort(string port) {
             if (!string.IsNullOrEmpty(Protocol)) {
                 if (Domain.IndexOf(':') > -1) {
                     Domain = Domain.Substring(0, Domain.IndexOf(':'));

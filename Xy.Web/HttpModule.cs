@@ -60,7 +60,7 @@ namespace Xy.Web {
                     _url.SetRoot(_webSetting.Root);
                 }
                 if (!string.IsNullOrEmpty(_webSetting.Port)) {
-                    _url.setPort(_webSetting.Port);
+                    _url.SetPort(_webSetting.Port);
                 }
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog("get websetting item.");
