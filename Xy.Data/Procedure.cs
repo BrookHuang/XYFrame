@@ -5,6 +5,7 @@ using System.Text;
 namespace Xy.Data {
     public delegate void beforeInvokeHandler(Procedure procedure, DataBase DB);
     public delegate void afterInvokeHandler(ProcedureResult result, Procedure procedure, DataBase DB);
+    public delegate void onErrorHandler(Exception exception, DataBase DB);
 
     public class ProcedureResult {
         public object IntResult { get; set; }
@@ -14,6 +15,7 @@ namespace Xy.Data {
     public class Procedure {
         public event beforeInvokeHandler BeforeInvoke;
         public event afterInvokeHandler AfterInvoke;
+        public event onErrorHandler OnError;
         
         private List<ProcedureParameter> _value = new List<ProcedureParameter>();
         private string _name;
@@ -183,12 +185,18 @@ namespace Xy.Data {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
-            if (BeforeInvoke != null) BeforeInvoke(this, DB);
-            ProcedureResult result = new ProcedureResult {
-                IntResult = DB.InvokeProcedure(this)
-            };
-            if (AfterInvoke != null) AfterInvoke(result, this, DB);
-            return (int)result.IntResult;
+            try {
+                if (BeforeInvoke != null) BeforeInvoke(this, DB);
+                ProcedureResult result = new ProcedureResult {
+                    IntResult = DB.InvokeProcedure(this)
+                };
+                if (AfterInvoke != null) AfterInvoke(result, this, DB);
+                return (int)result.IntResult;
+            } catch (Exception ex) {
+                if (OnError != null) OnError(ex, DB);
+                throw ex;
+            }
+            
         }
 
         /// <summary>
@@ -216,12 +224,17 @@ namespace Xy.Data {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
-            if (BeforeInvoke != null) BeforeInvoke(this, DB);
-            ProcedureResult result = new ProcedureResult {
-                IntResult = DB.InvokeProcedureResult(this)
-            };
-            if (AfterInvoke != null) AfterInvoke(result, this, DB);
-            return result.IntResult;
+            try {
+                if (BeforeInvoke != null) BeforeInvoke(this, DB);
+                ProcedureResult result = new ProcedureResult {
+                    IntResult = DB.InvokeProcedureResult(this)
+                };
+                if (AfterInvoke != null) AfterInvoke(result, this, DB);
+                return result.IntResult;
+            } catch (Exception ex) {
+                if (OnError != null) OnError(ex, DB);
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -245,16 +258,21 @@ namespace Xy.Data {
         }
 
         public System.Data.DataTable InvokeProcedureFill(DataBase DB) {
-            if (BeforeInvoke != null) BeforeInvoke(this, DB);
             if (DB == null) {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
-            ProcedureResult result = new ProcedureResult {
-                DataResult = DB.InvokeProcedureFill(this)
-            };
-            if (AfterInvoke != null) AfterInvoke(result, this ,DB);
-            return result.DataResult;
+            try {
+                if (BeforeInvoke != null) BeforeInvoke(this, DB);
+                ProcedureResult result = new ProcedureResult {
+                    DataResult = DB.InvokeProcedureFill(this)
+                };
+                if (AfterInvoke != null) AfterInvoke(result, this ,DB);
+                return result.DataResult;
+            } catch (Exception ex) {
+                if (OnError != null) OnError(ex, DB);
+                throw ex;
+            }
         }
     }
 }

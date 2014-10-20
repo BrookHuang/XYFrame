@@ -489,13 +489,41 @@ namespace XyFrameConsole {
             //_url = new Xy.Tools.Web.UrlAnalyzer("http://admin.xiaoyang.local/");
             //Console.WriteLine(_url.Site + " | " + _url.Domain + " | " + _url.Path);
 
-            System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
-            Console.WriteLine(_nvc["abc"] == null);
-            Console.WriteLine(_nvc["abc"]);
-            Console.WriteLine(_nvc["abc"] == null);
-            _nvc["abc"] = "abc";
-            Console.WriteLine(_nvc["abc"]);
-            Console.WriteLine(_nvc["abc"] == null);
+            //System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            //Console.WriteLine(_nvc["abc"] == null);
+            //Console.WriteLine(_nvc["abc"]);
+            //Console.WriteLine(_nvc["abc"] == null);
+            //_nvc["abc"] = "abc";
+            //Console.WriteLine(_nvc["abc"]);
+            //Console.WriteLine(_nvc["abc"] == null);
+
+            testA testc = new testB();
+            testc.functionA();
+            testc.functionB();
+            testc.functionC();
+        }
+
+        public abstract class testA {
+            public void functionA() {
+                Console.WriteLine("testA,functionA");
+            }
+            public virtual void functionB() {
+                Console.WriteLine("testA,functionB");
+            }
+            public void functionC() {
+                Console.WriteLine("testA,functionC");
+            }
+        }
+        public class testB : testA {
+            public new void functionA(){
+                Console.WriteLine("testB,functionA");
+            }
+            public override void functionB() {
+                Console.WriteLine("testB,functionB");
+            }
+            public void functionC() {
+                Console.WriteLine("testB,functionC");
+            }
         }
         #region Url Test
         //static string _urlString1 = "http://www.homes-up.com/mango-wood-tray-leaves-and-trees-homes-up-brown-25x9cm.html?test=abcd#tag";
