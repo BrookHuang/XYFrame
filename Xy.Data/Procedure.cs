@@ -5,10 +5,10 @@ using System.Text;
 namespace Xy.Data {
     public delegate void beforeInvokeHandler(Procedure procedure, DataBase DB);
     public delegate void afterInvokeHandler(ProcedureResult result, Procedure procedure, DataBase DB);
-    public delegate void onErrorHandler(Exception exception, DataBase DB);
+    public delegate bool onErrorHandler(Exception exception, DataBase DB);
 
     public class ProcedureResult {
-        public object IntResult { get; set; }
+        public object ObjectResult { get; set; }
         public System.Data.DataTable DataResult { get; set; }
     }
 
@@ -185,18 +185,18 @@ namespace Xy.Data {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
+            ProcedureResult result = new ProcedureResult();
             try {
                 if (BeforeInvoke != null) BeforeInvoke(this, DB);
-                ProcedureResult result = new ProcedureResult {
-                    IntResult = DB.InvokeProcedure(this)
-                };
+                result.ObjectResult = DB.InvokeProcedure(this);
                 if (AfterInvoke != null) AfterInvoke(result, this, DB);
-                return (int)result.IntResult;
+                
             } catch (Exception ex) {
-                if (OnError != null) OnError(ex, DB);
-                throw ex;
+                if (OnError == null || OnError(ex, DB)) {
+                    throw ex;
+                }
             }
-            
+            return (int)result.ObjectResult;
         }
 
         /// <summary>
@@ -224,17 +224,17 @@ namespace Xy.Data {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
+            ProcedureResult result = new ProcedureResult();
             try {
                 if (BeforeInvoke != null) BeforeInvoke(this, DB);
-                ProcedureResult result = new ProcedureResult {
-                    IntResult = DB.InvokeProcedureResult(this)
-                };
+                result.ObjectResult = DB.InvokeProcedureResult(this);
                 if (AfterInvoke != null) AfterInvoke(result, this, DB);
-                return result.IntResult;
             } catch (Exception ex) {
-                if (OnError != null) OnError(ex, DB);
-                throw ex;
+                if (OnError == null || OnError(ex, DB)) {
+                    throw ex;
+                }
             }
+            return result.ObjectResult;
         }
 
         /// <summary>
@@ -262,17 +262,17 @@ namespace Xy.Data {
                 if (_defaultDB == null) _defaultDB = new DataBase();
                 DB = _defaultDB;
             }
+            ProcedureResult result = new ProcedureResult();
             try {
                 if (BeforeInvoke != null) BeforeInvoke(this, DB);
-                ProcedureResult result = new ProcedureResult {
-                    DataResult = DB.InvokeProcedureFill(this)
-                };
+                result.DataResult = DB.InvokeProcedureFill(this);
                 if (AfterInvoke != null) AfterInvoke(result, this ,DB);
-                return result.DataResult;
             } catch (Exception ex) {
-                if (OnError != null) OnError(ex, DB);
-                throw ex;
+                if (OnError == null || OnError(ex, DB)) {
+                    throw ex;
+                }
             }
+            return result.DataResult;
         }
     }
 }

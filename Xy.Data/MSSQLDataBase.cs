@@ -39,12 +39,12 @@ namespace Xy.Data {
         public void StartTransaction(){
             if(_trans == null){
                 if(_con.State == ConnectionState.Closed || _con.State == ConnectionState.Broken){
-                    throw new TransException("it is not a useable connection");
+                    throw new TransException("It is not an available connection");
                 }else{
                     _trans = _con.BeginTransaction();
                 }
             }else{
-                throw new TransException("already exist a transaction");
+                throw new TransException("Already exist a transaction");
             }
                 
         }
@@ -55,7 +55,7 @@ namespace Xy.Data {
                 _trans.Dispose();
                 _trans = null;
             } else
-                throw new TransException("didn't have transaction to do it");
+                throw new TransException("Didn't have transaction to do it");
         }
 
         public void RollbackTransation(){
@@ -64,7 +64,7 @@ namespace Xy.Data {
                 _trans.Dispose();
                 _trans = null;
             } else
-                throw new TransException("didn't have transaction to do it");
+                throw new TransException("Didn't have transaction to do it");
         }
 
         public void Open() {
