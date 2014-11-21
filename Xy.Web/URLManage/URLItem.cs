@@ -75,7 +75,8 @@ namespace Xy.Web.URLManage {
                 _contentType = URLType.MainContent;
             }
             if (!string.IsNullOrEmpty(rexStr)) {
-                _regex = new Regex(rexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                //_regex = new Regex(rexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                _regex = new Regex(rexStr, RegexOptions.Compiled);
                 List<string> _groupsName = new List<string>(_regex.GetGroupNames());
                 for (int i = _groupsName.Count - 1; i >= 0; i--) {
                     if (char.IsDigit(_groupsName[i], 0)) _groupsName.RemoveAt(i);

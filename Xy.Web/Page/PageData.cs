@@ -46,17 +46,16 @@ namespace Xy.Web.Page {
         public PageDataItem Add(string name, Array array) {
             return inAdd(name, new PageDataItem(name, array));
         }
+        public PageDataItem Add(string name, Xy.Data.IDataModelDisplay XyDataModel) {
+            return inAdd(name, new PageDataItem(name, XyDataModel.GetXml()));
+        }
 
-        public void AddXyDataModel(string name, Xy.Data.IDataModelDisplay XyDataModel) {
+        public void AddSplitedXyDataModel(string name, Xy.Data.IDataModelDisplay XyDataModel) {
             string[] _attrs = XyDataModel.GetAttributesName();
             for (int i = 0; i < _attrs.Length; i++) {
                 string _attrName = _attrs[i];
                 inAdd(name + "." + _attrName, new PageDataItem(name + "." + _attrName, Convert.ToString(XyDataModel.GetAttributesValue(_attrName))));
             }
-        }
-
-        public void AddEntireXyDataModel(string name, Xy.Data.IDataModelDisplay XyDataModel) {
-            inAdd(name, new PageDataItem(name, XyDataModel.GetXml()));
         }
 
         public bool HasKey(string name) {
