@@ -213,6 +213,36 @@ namespace Xy.Data {
             }
         }
 
+        public DataSet InvokeProcedureFillSet(Procedure inProcedure) {
+            int? result;
+            return InvokeProcedureFillSet(inProcedure, out result);
+        }
+        public DataSet InvokeProcedureFillSet(Procedure inProcedure, out int? result) {
+            MySqlCommand _command;
+            if (string.IsNullOrEmpty(inProcedure.Command)) {
+                _command = new MySqlCommand(inProcedure.Name, _con);
+                _command.CommandType = CommandType.StoredProcedure;
+            } else {
+                _command = new MySqlCommand(inProcedure.Command, _con);
+                _command.CommandType = CommandType.Text;
+            }
+            _command.CommandTimeout = _dbi.Timeout;
+            if (inProcedure.HasParameter) {
+                AddParameters(_command, inProcedure);
+            }
+            DataSet _dataSet = new DataSet();
+            MySqlDataAdapter _dataAdapter = new MySqlDataAdapter(_command);
+            try {
+                if (_trans != null) _command.Transaction = _trans;
+                _dataAdapter.Fill(_dataSet);
+            } catch (Exception ex) {
+                ErrorString = "在存储过程中发生了错误:" + ex.Message;
+                throw ex;
+            }
+            result = (int?)getOutputParameters(_command, inProcedure);
+            return _dataSet;
+        }
+
         private void AddParameters(MySqlCommand Command, Procedure Structure) {
             foreach (ProcedureParameter _ProcedureParameter in Structure) {
                 MySqlParameter _temp = new MySqlParameter(_ProcedureParameter.Name, GetMySqlDbType(_ProcedureParameter.Type));

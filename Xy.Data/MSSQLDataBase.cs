@@ -212,6 +212,36 @@ namespace Xy.Data {
             }
         }
 
+        public DataSet InvokeProcedureFillSet(Procedure inProcedure) {
+            int? result;
+            return InvokeProcedureFillSet(inProcedure, out result);
+        }
+        public DataSet InvokeProcedureFillSet(Procedure inProcedure, out int? result) {
+            SqlCommand _command;
+            if (string.IsNullOrEmpty(inProcedure.Command)) {
+                _command = new SqlCommand(inProcedure.Name, _con);
+                _command.CommandType = CommandType.StoredProcedure;
+            } else {
+                _command = new SqlCommand(inProcedure.Command, _con);
+                _command.CommandType = CommandType.Text;
+            }
+            _command.CommandTimeout = _dbi.Timeout;
+            if (inProcedure.HasParameter) {
+                AddParameters(_command, inProcedure);
+            }
+            DataSet _dataSet = new DataSet();
+            SqlDataAdapter _dataAdapter = new SqlDataAdapter(_command);
+            try {
+                if (_trans != null) _command.Transaction = _trans;
+                _dataAdapter.Fill(_dataSet);
+            } catch (Exception ex) {
+                ErrorString = "在存储过程中发生了错误:" + ex.Message;
+                throw ex;
+            }
+            result = (int?)getOutputParameters(_command, inProcedure);
+            return _dataSet;
+        }
+
         private void AddParameters(SqlCommand Command, Procedure Structure) {
             foreach (ProcedureParameter _ProcedureParameter in Structure) {
                 System.Data.SqlClient.SqlParameter _temp = new SqlParameter(_ProcedureParameter.Name, _ProcedureParameter.Type);

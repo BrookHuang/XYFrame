@@ -10,6 +10,7 @@ namespace Xy.Data {
     public class ProcedureResult {
         public object ObjectResult { get; set; }
         public System.Data.DataTable DataResult { get; set; }
+        public System.Data.DataSet DataSetResult { get; set; }
     }
 
     public class Procedure {
@@ -273,6 +274,28 @@ namespace Xy.Data {
                 }
             }
             return result.DataResult;
+        }
+
+        public System.Data.DataSet InvokeProcedureFillSet(string ConnectionName) {
+            return InvokeProcedureFillSet(new DataBase(ConnectionName));
+        }
+
+        public System.Data.DataSet InvokeProcedureFillSet(DataBase DB) {
+            if (DB == null) {
+                if (_defaultDB == null) _defaultDB = new DataBase();
+                DB = _defaultDB;
+            }
+            ProcedureResult result = new ProcedureResult();
+            try {
+                if (BeforeInvoke != null) BeforeInvoke(this, DB);
+                result.DataSetResult = DB.InvokeProcedureFillSet(this);
+                if (AfterInvoke != null) AfterInvoke(result, this, DB);
+            } catch (Exception ex) {
+                if (OnError == null || OnError(ex, DB)) {
+                    throw ex;
+                }
+            }
+            return result.DataSetResult;
         }
     }
 }

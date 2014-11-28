@@ -46,13 +46,23 @@ namespace Xy.Data {
         }
 
         /// <summary>
-        /// 执行存储过程,并填充一个DataSet对象
+        /// 执行存储过程,并填充一个DataTable对象
         /// </summary>
         /// <param name="procedureName">存储过程名</param>
         /// <param name="Structure">参数结构</param>
         /// <returns>DataSet对象</returns>
         public System.Data.DataTable InvokeProcedureFill(Procedure Structure) {
             return _db.InvokeProcedureFill(Structure);
+        }
+
+        /// <summary>
+        /// 执行存储过程,并填充一个DataSet对象
+        /// </summary>
+        /// <param name="procedureName">存储过程名</param>
+        /// <param name="Structure">参数结构</param>
+        /// <returns>DataSet对象</returns>
+        public System.Data.DataSet InvokeProcedureFillSet(Procedure Structure) {
+            return _db.InvokeProcedureFillSet(Structure);
         }
 
         /// <summary>

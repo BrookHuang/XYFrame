@@ -86,7 +86,7 @@ namespace Xy.Web.Control {
                             _controlHold.InnerData = _container;
                         }
                     } else {
-                        if (CreateControl(_controlCreateString).IsNeedData) _controlDeep++;
+                        if (CreateControl(_controlCreateString, true).IsNeedData) _controlDeep++;
                     }
                 } else {
                     _container = new HTMLContainer(_currentThreadEntity.WebSetting.Encoding);
@@ -153,13 +153,17 @@ namespace Xy.Web.Control {
             return -1;
         }
 
-        public IControl CreateControl(string createString) {
+        public IControl CreateControl(string createString, bool HoldException = false) {
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog(_map + " found a control " + createString);
 #endif
             System.Collections.Specialized.NameValueCollection _tags = Xy.Tools.Control.Tag.Decode(createString);
             IControl _control = Xy.Runtime.Web.ControlFactory.Get(_tags.Keys[0]);
-            _control.Init(_tags, string.Concat(_map, '.'), _currentThreadEntity.ControlCount++);
+            try { 
+                _control.Init(_tags, string.Concat(_map, '.'), _currentThreadEntity.ControlCount++);
+            } catch (Exception e) {
+                if (!HoldException) throw e;
+            }
 #if DEBUG
             Xy.Tools.Debug.Log.WriteEventLog(_map + " " + createString + " control inited get map:" + _control.Map);
 #endif

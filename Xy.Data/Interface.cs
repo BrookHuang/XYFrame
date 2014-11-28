@@ -23,6 +23,9 @@ namespace Xy.Data {
         System.Data.DataTable InvokeProcedureFill(Procedure inProcedure);
         System.Data.DataTable InvokeProcedureFill(Procedure inProcedure, out int? result);
 
+        System.Data.DataSet InvokeProcedureFillSet(Procedure inProcedure);
+        System.Data.DataSet InvokeProcedureFillSet(Procedure inProcedure, out int? result);
+
         void Init(Xy.DataSetting.DataSettingItem Item);
         void StartTransaction();
         void CommitTransaction();
