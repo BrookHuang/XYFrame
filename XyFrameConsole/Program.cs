@@ -497,34 +497,10 @@ namespace XyFrameConsole {
             //Console.WriteLine(_nvc["abc"]);
             //Console.WriteLine(_nvc["abc"] == null);
 
-            testA testc = new testB();
-            testc.functionA();
-            testc.functionB();
-            testc.functionC();
+            System.IO.FileInfo _fi = new System.IO.FileInfo(@"D:\www.xiaoyang.local\Web\Xy_Cache\admin_default\IncludeCache\Entity\forms.html{ TableID='6' }.xycache");
+            Console.WriteLine(_fi.Directory);
         }
 
-        public abstract class testA {
-            public void functionA() {
-                Console.WriteLine("testA,functionA");
-            }
-            public virtual void functionB() {
-                Console.WriteLine("testA,functionB");
-            }
-            public void functionC() {
-                Console.WriteLine("testA,functionC");
-            }
-        }
-        public class testB : testA {
-            public new void functionA(){
-                Console.WriteLine("testB,functionA");
-            }
-            public override void functionB() {
-                Console.WriteLine("testB,functionB");
-            }
-            public void functionC() {
-                Console.WriteLine("testB,functionC");
-            }
-        }
         #region Url Test
         //static string _urlString1 = "http://www.homes-up.com/mango-wood-tray-leaves-and-trees-homes-up-brown-25x9cm.html?test=abcd#tag";
         //static string _urlString2 = "http://123.103.21.196/index.php/rongguang/cms_page_revision/edit/page_id/32/revision_id/553/key/4741f1df80cd46768f49ecaa9a287097741db121a122d03c66b6c871f62968e6/index.php?test=%e6%b5%8b%e8%af%95";

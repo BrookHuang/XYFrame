@@ -19,6 +19,7 @@ namespace Xy.Web.Control {
         private bool _cached = false;
         private System.Collections.Specialized.NameValueCollection _extValues = null;
         private Xy.WebSetting.WebSettingItem _webSetting = null;
+        private string _valueString = string.Empty;
 
         public IncludeControl() {
             _isNeedData = false;
@@ -44,7 +45,8 @@ namespace Xy.Web.Control {
                         }
                         break;
                     case "Value":
-                        _extValues = Xy.Tools.Control.Tag.Decode(CreateTag[i]);
+                        _valueString = CreateTag[i];
+                        _extValues = Xy.Tools.Control.Tag.Decode(_valueString);
                         break;
                     case "Config":
                         _webSetting = Xy.WebSetting.WebSettingCollection.GetWebSetting(CreateTag[i]);
@@ -57,19 +59,12 @@ namespace Xy.Web.Control {
         public void Handle(ThreadEntity CurrentThreadEntity, Page.PageAbstract CurrentPageClass, HTMLContainer ContentContainer) {
             _threadEntity = CurrentThreadEntity;
             _threadEntity.ControlIndex++;
-            //Xy.Tools.Web.UrlAnalyzer _url = CurrentThreadEntity.URL;
-            //if (_webSetting == null)
-            //    _webSetting = CurrentPageClass.WebSetting;
-            //if (_webSetting.AutoUrl) _webSetting.UpdateDomain(CurrentThreadEntity.URL.Site);
-            //URLManage.URLItem _urlItem = new URLManage.URLItem(_file, _type, _threadEntity.URLItem.Regex.ToString(), _threadEntity.URLItem.Mime, _enableScript, _enableCache, _threadEntity.URLItem.ContentType.ToString(), _threadEntity.URLItem.Age.Minutes);
-            //ThreadEntity _entity = new ThreadEntity(CurrentThreadEntity.WebContext, _webSetting, _urlItem, _url, true);
-            //_entity.Handle(_extValues);
-            //if (_entity.Content.HasContent)
-            //    _innerHTML.Write(_entity.Content);
+            if (_webSetting == null) _webSetting = CurrentPageClass.WebSetting;
+            HTMLContainer _container = new HTMLContainer(_webSetting.Encoding);
             Xy.Web.Page.PageAbstract _page;
             if (string.IsNullOrEmpty(_type)) _type = "Xy.Web,Xy.Web.Page.EmptyPage";
             _page = Runtime.Web.PageClassLibrary.Get(_type);
-            _page.Init(CurrentPageClass, _webSetting == null ? CurrentPageClass.WebSetting : _webSetting, ContentContainer);
+            _page.Init(CurrentPageClass, _webSetting, _container);
             if (_extValues != null) {
                 for (int i = 0; i < _extValues.Count; i++) {
                     if (_page.Request.Values[_extValues.Keys[i]] != null) {
@@ -79,10 +74,37 @@ namespace Xy.Web.Control {
                     }
                 }
             }
+            string _staticCacheDir = string.Empty, _staticCacheFile = string.Empty, _staticCachePath = string.Empty;
+            if (_cached) {
+                _staticCacheDir = _webSetting.CacheDir + "IncludeCache\\" + _threadEntity.URL.Dir.Replace('/', '\\');
+                _staticCacheFile = _file + _valueString;
+                _staticCachePath = _staticCacheDir + _staticCacheFile + ".xycache";
+                if (!_page.UpdateCache(_staticCachePath, DateTime.Now)) {
+                    if (System.IO.File.Exists(_staticCachePath)) {
+                        ContentContainer.Write(System.IO.File.ReadAllBytes(_staticCachePath));
+                        return;
+                    }
+                }
+            }
             if (_innerData != null && _innerData.HasContent) {
                 _page.SetContent(_innerData);
             }
             _page.Handle(_map, _file, _enableScript, true);
+            if (_cached) {
+                Xy.Tools.IO.File.ifNotExistsThenCreate(_staticCachePath);
+                using (System.IO.FileStream fs = new System.IO.FileStream(_staticCachePath, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read)) {
+                    using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fs)) {
+                        try {
+                            sw.Write(_container.ToString());
+                            sw.Flush();
+                        } finally {
+                            sw.Close();
+                            fs.Close();
+                        }
+                    }
+                }
+            }
+            ContentContainer.Write(_container);
             //ContentContainer.Write(_page.HTMLContainer);
             _threadEntity.ControlIndex--;
         }

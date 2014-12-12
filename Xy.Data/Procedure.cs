@@ -134,8 +134,10 @@ namespace Xy.Data {
             foreach (ProcedureParameter _item in _value) {
                 if (string.Compare(_item.Name, Name) == 0) {
                     _item.Value = value;
+                    return;
                 }
             }
+            throw new Exception(string.Format("can not found parameter '{0}'", Name));
         }
 
         public object GetItem(string Name) {

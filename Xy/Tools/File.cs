@@ -5,8 +5,9 @@ using System.Text;
 namespace Xy.Tools.IO {
     public class File {
         public static string ifNotExistsThenCreate(string path) {
-            if (!System.IO.Directory.Exists(path)) {
-                System.IO.Directory.CreateDirectory(path);
+            System.IO.FileInfo _fi = new System.IO.FileInfo(path);
+            if (!System.IO.Directory.Exists(_fi.Directory.ToString())) {
+                System.IO.Directory.CreateDirectory(_fi.Directory.ToString());
             }
             return path;
         }

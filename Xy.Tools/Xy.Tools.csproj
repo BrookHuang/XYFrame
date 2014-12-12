@@ -43,7 +43,6 @@
     <Compile Include="Debug\TimeWatch.cs" />
     <Compile Include="Encrypt\DES.cs" />
     <Compile Include="Encrypt\EncryptHelper.cs" />
-    <Compile Include="Encrypt\IEncrypt.cs" />
     <Compile Include="Encrypt\Rijndael.cs" />
     <Compile Include="Encrypt\TripleDES.cs" />
     <Compile Include="ImageHandler.cs" />

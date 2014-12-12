@@ -123,7 +123,7 @@ namespace Xy.Web.Page {
             if (_threadEntity.URLItem.EnableCache && !isIncludePage) {
                 _staticCacheDir = WebSetting.CacheDir + "PageCache\\" + _threadEntity.URL.Dir.Replace('/', '\\');
                 _staticCacheFile = filePath + (_threadEntity.URL.HasParam ? _threadEntity.URL.Param.Replace('?', '#') : string.Empty);
-                _staticCachePath = _staticCacheDir + _staticCacheFile + ".xyc.aspx";
+                _staticCachePath = _staticCacheDir + _staticCacheFile + ".xycache";
                 if (!UpdateCache(_staticCachePath, DateTime.Now)) {
                     if (System.IO.File.Exists(_staticCachePath)) {
                         DateTime _modifiedTime = System.IO.File.GetLastWriteTime(_staticCachePath);
@@ -189,7 +189,7 @@ namespace Xy.Web.Page {
 #endif
 
             if (_threadEntity.URLItem.EnableCache && !isIncludePage) {
-                Xy.Tools.IO.File.ifNotExistsThenCreate(_staticCacheDir);
+                Xy.Tools.IO.File.ifNotExistsThenCreate(_staticCachePath);
                 using (System.IO.FileStream fs = new System.IO.FileStream(_staticCachePath, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read)) {
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fs)) {
                         try {
